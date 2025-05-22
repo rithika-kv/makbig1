@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Admin - Student Approvals</title>
+</head>
+<body>
+    <h2>Student Approvals</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Guardian Phone Number</th>
+                <th>Qualification</th>
+                <th>Profile Picture</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.s_firstname }} {{ student.s_lastname }}</td>
+                <td>{{ student.s_email }}</td>
+                <td>{{ student.s_phonenumber }}</td>
+                <td>{{ student.s_guardianphonenumber }}</td>
+                <td>{{ student.s_qualification }}</td>
+                <td>{{ student.s_profilepicture }}</td>
+                <td>{{ student.s_status }}</td>
+                <td>
+                    {% if student.s_status != 'approved' %}
+                    <form method="post" action="{% url 'app1:approve_student' student.s_id %}">
+                        {% csrf_token %}
+                        <button type="submit">Approve</button>
+                    </form>
+                    {% else %}
+                        ✅ Approved
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No students found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
